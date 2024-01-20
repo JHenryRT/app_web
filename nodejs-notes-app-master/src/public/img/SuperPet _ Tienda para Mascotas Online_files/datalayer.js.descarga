@@ -1,0 +1,874 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var processInclude = __webpack_require__(1);
+
+$(document).ready(function () {
+    processInclude(__webpack_require__(2));
+});
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (include) {
+    if (typeof include === 'function') {
+        include();
+    } else if (typeof include === 'object') {
+        Object.keys(include).forEach(function (key) {
+            if (typeof include[key] === 'function') {
+                include[key]();
+            }
+        });
+    }
+};
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+const eCommerceEvents = __webpack_require__(3);
+
+module.exports = function () {
+    // when the page is ready, we sent the viewItemList event
+    // $(document).ready(eCommerceEvents.viewItemListEvent);
+    $(document).ready(function(){
+        setTimeout(() => {
+            $(document).ready(eCommerceEvents.viewItemListEvent);
+        }, 2000)
+    });
+
+    // when the user clicks on the show more button, we sent the viewItemList event
+    $('.container').on('click', '.show-more button', eCommerceEvents.viewItemListEvent);
+
+    // when the user clicks on a product, we sent the selectItem event
+    $(document).on('click', '.product', function(){
+        var $element = $(this);
+        eCommerceEvents.selectItemEvent($element)
+    })
+
+    // when the user is on the product detail page, we sent the viewItem event
+    $('.container.product-detail.product-wrapper').ready(eCommerceEvents.viewItemEvent);
+
+    // when the user clicks on the add to cart button, we sent the addToCart event
+    $(document).on('click', 'button.add-to-cart', eCommerceEvents.addToCartInProductDetailEvent);
+    $(document).on('click', 'button.add-to-cart-global', eCommerceEvents.addToCartInQuickViewEvent);
+
+    // when the user is on the checkout page, we sent the beginCheckout event
+    $('#checkout-main').ready(eCommerceEvents.beginCheckoutEvent);
+
+    // when the user is on the cart page, we sent the view_cart event
+    $(document).ready(eCommerceEvents.viewCartEventOnCartPage);
+    $(document).on('click', 'a.js-view-cart', eCommerceEvents.viewCartEvent);
+    $(document).on('click', 'a.js-minicart-link', eCommerceEvents.viewCartEvent);
+
+    // when the user enters their address
+    $('button.submit-shipping').on('click', eCommerceEvents.addCheckoutAddressEvent);
+
+    // when the user selects a shipping method and delivery time
+    $('button.submit-shipping-groups').on('click', eCommerceEvents.addShippingInfoEvent);
+
+    // when the user selects a payment method
+    $('button.submit-payment').on('click', eCommerceEvents.addPaymentInfoEvent);
+
+    // when the user confirms the payment with niubiz
+    $('button.niubiz-button-pay').on('click', eCommerceEvents.addCheckoutPaymentEvent);
+
+    // when the user clicks on the next step button or is on the place order page, we sent the checkout event
+    $('#checkout-main').ready(eCommerceEvents.checkoutEvent);
+    $('#checkout-main .next-step-button .btn-primary').on('click', eCommerceEvents.checkoutEvent);
+
+    // when the user is on the receipt page, we sent the purchase event
+    $('.container.receipt').ready(eCommerceEvents.purchaseEvent);
+
+    // when the user clicks on the delete button, we sent the removeFromCart event
+    $('body').on('click', '.cart-delete-confirmation-btn', function (e) {
+        e.preventDefault();
+        eCommerceEvents.removeFromCartEvent();
+    });
+};
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+const GA_CONST = __webpack_require__(4).GA_CONST;
+
+/**
+ * String To Number
+ * @function stringToNum
+ * @param   {string} el - Element
+ * @returns {number}
+ */
+function stringToNum (el) {
+    var string = el;
+    //var plainNum = string.replace(/[^0-9.,]/g,'').replace(",", "");
+    var plainNum = string.replace(/[^0-9.,]/g,'').replace(",", "").replace(".", "");
+    return plainNum
+}
+
+function stringToNumPen (el) {
+    console.log("entre a la funcion de PEN");
+    var string = el;
+    //var plainNum = string.replace(/[^0-9.,]/g,'').replace(",", "");
+    var plainNum = string.replace(/[^0-9.]/g,'').replace(",", "");
+    return plainNum
+}
+
+function stringToNumber(texto) {
+    texto = texto.replace(/,/g, '.');
+    texto = texto.replace(/[^\d.-]/g, '');
+    const numero = parseFloat(texto);
+    return numero
+}
+
+/**
+ * Get Price From Element
+ * @function getPriceFromElement
+ * @param    {jQuery} $product - DOM element of product
+ * @returns  {number}
+ */
+function getPriceFromElement($container) {
+    var $element = $container.find('.sales .value');
+    var price = $element.attr('content');
+    return (!isNaN(price)) ? stringToNumber(price) : 0
+}
+
+/**
+ * View Item List Event
+ * @function viewItemListEvent
+ * @returns  {void}
+ */
+const viewItemListEvent = function () {
+    var items = [];
+    var $productList = $(".product");
+
+    if ($productList.length === 0) return;
+
+    $productList.each(function (index) {
+        var $product = $(this);
+        var url = $product.attr("data-url");
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (response) {
+                var product = response.product;
+                var item = {};
+
+                item.item_name = product.name;
+                item.item_id = product.id;
+                item.price = product.price !== 0 ? product.price : getPriceFromElement($product);
+                item.item_brand = product.brand;
+                product.categories.forEach(function (category, index) {
+                    var categoryIndex = index === 0 ? "" : index;
+                    item['item_category' + categoryIndex] = category;
+                });
+                item.item_variant = product.variant;
+                item.item_list_name = item.item_category;
+                item.item_list_id = item.item_id;
+                item.index = index + 1;
+                item.quantity = product.quantity;
+
+                items.push({ ...item });
+            }
+        });
+    });
+    if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.VIEW_ITEM_LIST,
+        ecommerce: {
+            items: items,
+        },
+    });
+};
+
+/**
+ * View Item Event
+ * @function viewItemEvent
+ * @returns  {void}
+ */
+const viewItemEvent = function () {
+    var $container = $('.container.product-detail.product-wrapper');
+    if ($container.length === 0) return;
+
+    var url = $container.attr("data-url");
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (response) {
+            var product = response.product;
+            var item = {};
+
+            item.item_name = product.name;
+            item.item_id = product.id;
+            item.price = product.price !== 0 ? product.price : getPriceFromElement($container);
+            item.item_brand = product.brand;
+            product.categories.forEach(function (category, index) {
+                var categoryIndex = index === 0 ? "" : index;
+                item['item_category' + categoryIndex] = category;
+            });
+            item.item_variant = product.variant;
+            item.item_list_name = item.item_category;
+            item.item_list_id = item.item_id;
+            item.index = 1;
+            item.quantity = product.quantity;
+            if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                event: GA_CONST.EVENTS.NAME.VIEW_ITEM,
+                ecommerce: {
+                    items: [item],
+                },
+            });
+        }
+    });
+}
+
+const getCartProducts = function () {
+    var items = [];
+    let products = (typeof cartProducts !== 'undefined') ? cartProducts : getCart().products;
+
+    products.forEach(function (product, index) {
+        var item = {};
+        item.item_name = product.name;
+        item.item_id = product.id;
+        item.price = +product.price;
+        item.item_brand = product.brand;
+        item.item_category = product.category;
+        item.item_variant = product.variant;
+        item.item_list_name = item.item_category;
+        item.item_list_id = item.item_id;
+        item.index = index + 1;
+        item.quantity = product.quantity;
+
+        items.push(item);
+    });
+
+    return items;
+}
+
+const getCurrency = function () {
+    var currency = '';
+    if (typeof cartProducts !== 'undefined') {
+        let prod = cartProducts.reduce((acc) => acc)
+        currency = prod.priceCC
+    }
+    return currency;
+}
+
+/**
+ * View Item Event
+ * @function viewCartEvent
+ * @returns  {void}
+ */
+const viewCartEvent = function () {
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.VIEW_CART,
+        ecommerce: {
+            currency: getCurrency(),
+            items: getCartProducts()
+        }
+    });
+}
+
+const viewCartEventOnCartPage = function () {
+    var $container = document.querySelector('.cart-page');
+    if (!$container) return;
+    if (localStorage.getItem('acceptCookiesMarketing') === 'false') return;
+    viewCartEvent()
+}
+
+
+const addCheckoutAddressEvent = function () {
+    var $container = $('.container.data-checkout-stage')
+    if ($container.length === 0) return;
+    if (localStorage.getItem('acceptCookiesMarketing') === 'false') return;
+
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.CHECKOUT_ADDRESS,
+        ecommerce: {
+            currency: order.totals.currencyCode,
+            items: getCartProducts(),
+            value: order.totals.grandTotal,
+            total_tax_exc: order.totals.grandTotal,
+            total_products: order.totals.subTotal,
+            total_shipping: order.totals.totalShippingCost,
+            total_discounts: order.totals.orderLevelDiscountTotal
+        }
+    });
+}
+
+const addShippingInfoEvent = function () {
+    var $container = $('.container.data-checkout-stage').length
+    if ($container.length === 0) return;
+    if (localStorage.getItem('acceptCookiesMarketing') === 'false') return;
+
+    let shippingMethod = $(".shipping-type__item.selected").find('.shipping-type__title').text()
+    if (shippingMethod.length === 0) return;
+
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.CHECKOUT_SHIPPING_INFO,
+        ecommerce: {
+            currency: order.totals.currencyCode,
+            items: getCartProducts(),
+            value: order.totals.grandTotal,
+            total_tax_exc: order.totals.grandTotal,
+            total_products: order.totals.subTotal,
+            total_shipping: order.totals.totalShippingCost,
+            total_discounts: order.totals.orderLevelDiscountTotal,
+            shipping_tier: shippingMethod
+        }
+    });
+}
+
+const addPaymentInfoEvent = function () {
+    var $container = $('.container.data-checkout-stage').length
+    if ($container.length === 0) return;
+    if (localStorage.getItem('acceptCookiesMarketing') === 'false') return;
+
+    let paymentMethod = $('.payment-options').find('.nav-link.active').find('.title').text()
+    if (paymentMethod.length === 0) return;
+
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.CHECKOUT_PAYMENT_INFO,
+        ecommerce: {
+            currency: order.totals.currencyCode,
+            items: getCartProducts(),
+            value: order.totals.grandTotal,
+            total_tax_exc: order.totals.grandTotal,
+            total_products: order.totals.subTotal,
+            total_shipping: order.totals.totalShippingCost,
+            total_discounts: order.totals.orderLevelDiscountTotal,
+            payment_type: paymentMethod
+        }
+    });
+}
+
+const addCheckoutPaymentEvent = function () {
+    var $button = $('button.niubiz-button-pay').length
+    if ($button.length === 0) return;
+    if (localStorage.getItem('acceptCookiesMarketing') === 'false') return;
+
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.CHECKOUT_PAYMENT,
+        ecommerce: {
+            currency: order.totals.currencyCode,
+            items: getCartProducts(),
+            value: order.totals.grandTotal,
+            total_tax_exc: order.totals.grandTotal,
+            total_products: order.totals.subTotal,
+            total_shipping: order.totals.totalShippingCost,
+            total_discounts: order.totals.orderLevelDiscountTotal,
+        }
+    });
+}
+
+/**
+ * Select Item Event
+ * @function selectItemEvent
+ * @param    {jQuery} $element - DOM element of product
+ * @returns  {void}
+ */
+const selectItemEvent = function ($element) {
+    var $parent = $element.closest('.product');
+
+    if ($parent.length === 0) return;
+
+    var url = $parent.attr("data-url");
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (response) {
+            var product = response.product;
+            var item = {};
+
+            item.item_name = product.name;
+            item.item_id = product.id;
+            item.price = product.price !== 0 ? product.price : getPriceFromElement($parent);
+            item.item_brand = product.brand;
+            product.categories.forEach(function (category, index) {
+                var categoryIndex = index === 0 ? "" : index;
+                item['item_category' + categoryIndex] = category;
+            });
+            item.item_variant = product.variant;
+            item.item_list_name = item.item_category;
+            item.item_list_id = item.item_id;
+            item.index = 1;
+            item.quantity = product.quantity;
+            if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                event: GA_CONST.EVENTS.NAME.SELECT_ITEM,
+                ecommerce: {
+                    items: [item],
+                },
+            });
+        }
+    });
+}
+
+/**
+ * Add To Cart In Product Details Event
+ * @function addToCartInProductDetailEvent
+ * @returns  {void}
+ */
+const addToCartInProductDetailEvent = function () {
+    var $container = $('.container.product-detail.product-wrapper');
+    if ($container.length === 0) return;
+
+    var url = $container.attr("data-url");
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (response) {
+            var product = response.product;
+            var item = {};
+
+            item.item_name = product.name;
+            item.item_id = product.id;
+            item.price = product.price !== 0 ? product.price : getPriceFromElement($container);
+            item.item_brand = product.brand;
+            product.categories.forEach(function (category, index) {
+                var categoryIndex = index === 0 ? "" : index;
+                item['item_category' + categoryIndex] = category;
+            });
+            item.item_variant = product.variant;
+            item.item_list_name = item.item_category;
+            item.item_list_id = item.item_id;
+            item.index = 1;
+
+            var $selectUnits = $('.quantity-select-component.input-group').last();
+            item.quantity = $selectUnits.length > 0 ? $selectUnits.attr('data-unitselected') : 1;
+
+            if (typeof productDetail !== 'undefined') {
+                item.price = productDetail[0].price;
+                item.item_variant = productDetail[0].variant;
+            }
+            if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                event: GA_CONST.EVENTS.NAME.ADD_TO_CART,
+                ecommerce: {
+                    items: [item],
+                },
+            });
+        }
+    });
+}
+
+/**
+ * Add To Cart In Quick View Event
+ * @function addToCartInQuickViewEvent
+ * @returns {void}
+ */
+const addToCartInQuickViewEvent = function () {
+    var $container = $('#quickViewModal');
+    if ($container.length === 0) return;
+
+    var url = $container.attr("data-url");
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (response) {
+            var product = response.product;
+            var item = {};
+
+            item.item_name = product.productName;
+            item.item_id = product.id;
+
+            if (product.price.min !== null) item.price = product.price.min.sales.value;
+            else item.price = product.price.sales.value;
+
+            item.item_brand = product.brand;
+            item.item_category = product.itemCategory;
+            item.item_variant = product.variationAttributes[0].values[0].value;
+            item.item_list_name = item.item_category;
+            item.item_list_id = item.item_id;
+            item.index = 1;
+
+            var $selectUnits = $('.quantity-select-component.input-group').last();
+            item.quantity = $selectUnits.length > 0 ? $selectUnits.attr('data-unitselected') : 1;
+
+            if (typeof productDetail !== 'undefined') {
+                item.price = productDetail[0].price;
+                item.item_variant = productDetail[0].variant;
+            }
+            if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                event: GA_CONST.EVENTS.NAME.ADD_TO_CART,
+                ecommerce: {
+                    items: [item],
+                },
+            });
+        }
+    });
+}
+
+/**
+ * Remove From Cart Event
+ * @function removeFromCartEvent
+ * @returns  {void}
+ */
+const removeFromCartEvent = function () {
+    if (typeof deleteProducts === 'undefined') return;
+
+    var items = [];
+
+    deleteProducts.forEach(function (product, index) {
+        var item = {};
+
+        item.item_name = product.name;
+        item.item_id = product.id;
+        item.price = +product.price;
+        item.item_brand = product.brand;
+        item.item_category = product.category;
+        item.item_variant = product.variant;
+        item.item_list_name = item.item_category;
+        item.item_list_id = item.item_id;
+        item.index = index + 1;
+        item.quantity = product.qty;
+
+        items.push(item);
+    });
+    if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+		event: GA_CONST.EVENTS.NAME.REMOVE_FROM_CART,
+		ecommerce: {
+            items: items
+		}
+    });
+}
+
+/**
+ * Begin Checkout Event
+ * @function beginCheckoutEvent
+ * @returns  {void}
+ */
+const beginCheckoutEvent = function () {
+    var $containerCartPage = $('#checkout-main');
+    if ($containerCartPage.length === 0) return;
+
+    if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+    dataLayer.push({ ecommerce: null });
+    dataLayer.push({
+        event: GA_CONST.EVENTS.NAME.BEGIN_CHECKOUT,
+        ecommerce: {
+            items: getCartProducts()
+        }
+    });
+}
+
+/**
+ * Get Checkout Stage From Query Strings
+ * @function getCheckoutStageFromQueryStrings
+ * @returns  {string}
+ */
+const getCheckoutStageFromQueryStrings = function() {
+    var queryStrings = window.location.search;
+    if (queryStrings.length === 0) return;
+
+    var queryString = queryStrings.substring(1);
+    var queryStringsArray = queryString.split('&');
+    var checkoutStage = queryStringsArray[0].split('=')[1];
+
+    return checkoutStage;
+}
+
+/**
+ * Checkout Event
+ * @function checkoutEvent
+ * @returns  {void}
+ */
+const checkoutEvent = function () {
+    var $nextStageButton = $(this);
+    var checkoutStage = getCheckoutStageFromQueryStrings();
+
+    if ((($nextStageButton && $nextStageButton.hasClass('submit-payment') && checkoutStage === GA_CONST.EVENTS.CHECKOUT.STAGES.PAYMENT) ||
+        (checkoutStage === GA_CONST.EVENTS.CHECKOUT.STAGES.PLACE_ORDER)) &&
+        typeof cartProducts !== 'undefined') {
+        var items = [];
+
+        cartProducts.forEach(function (product, index) {
+            var item = {};
+
+            item.item_name = product.name;
+            item.item_id = product.id;
+            item.price = +product.price;
+            item.item_brand = product.brand;
+            item.item_category = product.category;
+            item.item_variant = product.variant;
+            item.item_list_name = item.item_category;
+            item.item_list_id = item.item_id;
+            item.index = index + 1;
+            item.quantity = product.quantity;
+
+            items.push(item);
+        });
+        if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+        dataLayer.push({ ecommerce: null });
+        dataLayer.push({
+            event: GA_CONST.EVENTS.NAME.CHECKOUT,
+            ecommerce: {
+                items: items
+            }
+        });
+    }
+}
+
+/**
+ * Purchase Event
+ * @function purchaseEvent
+ * @returns  {void}
+ */
+const purchaseEvent = function () {
+    var $containerReceipt = $('.container.receipt');
+    if ($containerReceipt.length === 0) return;
+
+    if (typeof products !== 'undefined') {
+        var items = [];
+
+        products.forEach(function (product, index) {
+            var item = {};
+
+            item.item_name = product.name;
+            item.item_id = product.id;
+            item.price = +product.price;
+            item.item_brand = product.brand;
+            item.item_category = product.category;
+            item.item_variant = product.variant;
+            item.index = index + 1;
+            item.quantity = product.quantity;
+
+            items.push(item);
+        });
+
+        var transaction_id = '';
+        var affiliation = GA_CONST.EVENTS.PURCHASE.AFFILIATION;
+        var value = 0;
+        var orderTax = 0;
+        var orderShipping = 0;
+        var currency = '';
+        var orderCoupon = '';
+
+        if (typeof orderNumber !== 'undefined') transaction_id = orderNumber;
+
+        if (typeof coupon !== 'undefined') orderCoupon = coupon;
+        if (typeof currentCurrency !== 'undefined') currency = currentCurrency;
+        if (localStorage.getItem('acceptCookiesMarketing')==='false') return;
+
+        if(currency=='PEN'){
+            //console.log("Entre a peru");
+            if (typeof grandTotal !== 'undefined') value = stringToNumPen(grandTotal);
+            if (typeof tax !== 'undefined') orderTax = stringToNumPen(tax);
+            if (typeof shipping !== 'undefined') orderShipping = stringToNumPen(shipping);
+        }else{
+            if (typeof grandTotal !== 'undefined') value = stringToNum(grandTotal);
+            if (typeof tax !== 'undefined') orderTax = stringToNum(tax);
+            if (typeof shipping !== 'undefined') orderShipping = stringToNum(shipping);
+        }
+
+        dataLayer.push({ ecommerce: null });
+        dataLayer.push({
+            event: GA_CONST.EVENTS.NAME.PURCHASE,
+            ecommerce: {
+                transaction_id: transaction_id,
+                affiliation: affiliation,
+                value: value,
+                tax: orderTax,
+                shipping: orderShipping,
+                currency: currency,
+                coupon: orderCoupon,
+                items: items
+            }
+        });
+    }
+}
+
+// Sesion Cart
+const setCart = function (miCarrito) {
+    localStorage.setItem('carrito', JSON.stringify(miCarrito));
+}
+
+const getCart = function () {
+    return JSON.parse(localStorage.getItem('myCart'));
+}
+
+
+module.exports = {
+    viewItemListEvent: viewItemListEvent,
+    viewItemEvent: viewItemEvent,
+    selectItemEvent: selectItemEvent,
+    addToCartInProductDetailEvent: addToCartInProductDetailEvent,
+    addToCartInQuickViewEvent: addToCartInQuickViewEvent,
+    removeFromCartEvent: removeFromCartEvent,
+    beginCheckoutEvent: beginCheckoutEvent,
+    checkoutEvent: checkoutEvent,
+    purchaseEvent: purchaseEvent,
+    viewCartEvent: viewCartEvent,
+    addCheckoutAddressEvent: addCheckoutAddressEvent,
+    addShippingInfoEvent: addShippingInfoEvent,
+    addPaymentInfoEvent: addPaymentInfoEvent,
+    addCheckoutPaymentEvent: addCheckoutPaymentEvent,
+    viewCartEventOnCartPage: viewCartEventOnCartPage
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+const GA_CONST = {
+    EVENTS: {
+        NAME: {
+            VIEW_ITEM_LIST: 'view_item_list',
+            VIEW_ITEM: 'view_item',
+            SELECT_ITEM: 'select_item',
+            ADD_TO_CART: 'add_to_cart',
+            REMOVE_FROM_CART: 'remove_from_cart',
+            BEGIN_CHECKOUT: 'begin_checkout',
+            CHECKOUT: 'checkout',
+            PURCHASE: 'purchase',
+            VIEW_CART: 'view_cart',
+            CHECKOUT_ADDRESS: 'checkout_address',
+            CHECKOUT_SHIPPING_INFO: 'add_shipping_info',
+            CHECKOUT_PAYMENT_INFO: 'add_payment_info',
+            CHECKOUT_PAYMENT: 'checkout_payment',
+        },
+        PURCHASE: {
+            AFFILIATION: 'Online Store',
+        },
+        CHECKOUT: {
+            STAGES: {
+                SHIPPING: 'shipping',
+                SHIPPING_GROUPS: 'shippingGroups',
+                PAYMENT: 'payment',
+                PLACE_ORDER: 'placeOrder',
+            }
+        }
+    }
+}
+
+module.exports = {
+    GA_CONST: GA_CONST
+}
+
+/***/ })
+/******/ ]);
